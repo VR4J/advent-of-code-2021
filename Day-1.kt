@@ -3,7 +3,13 @@ package be.vreijsen.aoc
 import be.vreijsen.aoc.utils.*;
 
 fun main(args: Array<String>) {
-    val input = getPuzzleInput(1, 1)
+    val inputPartOne = getPuzzleInput(1, 1)
+
+    runPartOne(inputPartOne);
+    runPartTwo(inputPartOne);
+}
+
+fun runPartOne(input: List<String>) {
     var count = 0;
 
     for (i in input.indices) {
@@ -18,4 +24,8 @@ fun main(args: Array<String>) {
     }
 
     println("Depth measured increased $count times.")
+}
+
+fun runPartTwo(input: List<String>) {
+    // TODO
 }
