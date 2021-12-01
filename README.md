@@ -6,5 +6,5 @@ Advent of Code 2021 - Kotlin
 - `brew install kotlin`
 
 ## Running
-- `kotlinc Day1.kt -include-runtime -d Day1.jar`
-- `java -jar Day1.jar`
+- `kotlinc -include-runtime -d builds/Day-1.jar Day-1.kt utils/*.kt`
+- `java -jar builds/Day-1.jar`
