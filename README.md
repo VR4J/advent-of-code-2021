@@ -7,4 +7,4 @@ Advent of Code 2021 - Kotlin
 
 ## Running
 - `kotlinc Day1.kt -include-runtime -d Day1.jar`
-- java -jar Day1.jar
+- `java -jar Day1.jar`
