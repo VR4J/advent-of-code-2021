@@ -23,20 +23,18 @@ fun main(args: Array<String>) {
 fun navigate(input: List<String>, forward: NavigationCommand, down: NavigationCommand, up: NavigationCommand) {
     var position = arrayOf(0, 0, 0)
 
-    input.forEach { command -> 
-        if(command.contains("forward")) {
-            val value = command.substring("forward ".length)
-            position = forward(value.toInt(), position)
-        }
-    
-        if(command.contains("down")) {
-            val value = command.substring("down ".length)
-            position = down(value.toInt(), position)
-        }
-    
-        if(command.contains("up")) {
-            val value = command.substring("up ".length)
-            position = up(value.toInt(), position)
+    input.forEach { line -> 
+        var (command, value) = line.split(" ")
+
+        position = when (command) {
+            "forward" ->
+                forward(value.toInt(), position)
+            "down" -> 
+                down(value.toInt(), position)
+            "up" -> 
+                up(value.toInt(), position)
+            else -> 
+                // do nothing
         }
     }
     
