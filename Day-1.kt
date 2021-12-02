@@ -1,12 +1,12 @@
-package be.vreijsen.aoc
+package be.vreijsen.aoc.day_1
 
 import be.vreijsen.aoc.utils.*;
 
 fun main(args: Array<String>) {
-    val inputPartOne = getPuzzleInput(1, 1)
+    val input = getPuzzleInput(1, 1)
 
-    runPartOne(inputPartOne);
-    runPartTwo(inputPartOne);
+    runPartOne(input);
+    runPartTwo(input);
 }
 
 fun runPartOne(input: List<String>) {
