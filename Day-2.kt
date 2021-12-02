@@ -20,7 +20,7 @@ fun main(args: Array<String>) {
     );
 }
 
-fun navigate(input: List<String>, forward: NavigationMove, down: NavigationMove, up: NavigationMove) {
+fun navigate(input: List<String>, forward: NavigationCommand, down: NavigationCommand, up: NavigationCommand) {
     var position = arrayOf(0, 0, 0)
 
     input.forEach { command -> 
@@ -45,4 +45,4 @@ fun navigate(input: List<String>, forward: NavigationMove, down: NavigationMove,
     println("Multiplied horizontal ($x) position by depth ($y) is ${x * y}")
 }
 
-typealias NavigationMove = (value: Int, positions: Array<Int>) -> Array<Int>
+typealias NavigationCommand = (value: Int, positions: Array<Int>) -> Array<Int>
