@@ -3,6 +3,8 @@ package be.vreijsen.aoc.day_3
 import be.vreijsen.aoc.utils.*;
 import kotlin.comparisons.compareByDescending
 
+val widthRange = 0..11
+
 fun main(args: Array<String>) {
     val input = getPuzzleInput(3, 1)
 
@@ -14,48 +16,40 @@ fun main(args: Array<String>) {
 }
 
 fun getLifeSupportRating(rows: List<String>): Int {
-    val oxygenGeneratorRating = locateByFiltering(rows) { values -> getMostOccurring(values) }
-    val gasScrubberRating = locateByFiltering(rows) { values -> getLeastOccurring(values) }
+    val oxygenGeneratorRating = locateWithFiltering(rows) { getMostOccurring(it) }
+    val gasScrubberRating = locateWithFiltering(rows) { getLeastOccurring(it) }
 
     return oxygenGeneratorRating * gasScrubberRating
 }
 
 fun getPowerConsumption(rows: List<String>): Int {
-    val gammaRate = locate(rows) { values -> getMostOccurring(values) }
-    val epsilonRate = locate(rows) { values -> getLeastOccurring(values) }
+    val gammaRating = locate(rows) { getMostOccurring(it) }
+    val epsilonRating = locate(rows) { getLeastOccurring(it) }
 
-    return gammaRate * epsilonRate
+    return gammaRating * epsilonRating
 }
 
-fun locate(rows: List<String>, calculateFn: Calculation): Int {
-    var state = ""
-
-    getColumns(rows).forEach{ (index, values) -> 
-        state += calculateFn(values)
-    }
-
-    return state.toInt(2)
+fun locate(rows: List<String>, getOccuringFn: OccurrenceCalculation): Int {
+    return (widthRange)
+                .map { index -> getColumn(rows, index) }
+                .map { values -> getOccuringFn(values) }
+                .joinToString("")
+                .toInt(2)
 }
 
-fun locateByFiltering(rows: List<String>, calculateFn: Calculation): Int {
-    var remaining = rows.copyOf()
-    var state = "";
+fun locateWithFiltering(rows: List<String>, getOccuringFn: OccurrenceCalculation): Int {
+    val rowState = rows.toMutableList()
 
-    repeat(12) { index ->
-        var column = getColumns(remaining).get(index) !!
-       
-        state += calculateFn(column)
+    for (index in widthRange) {
+        val column = getColumn(rowState, index) 
+        val result = getOccuringFn(column)
 
-        remaining = remaining.filter { value ->
-            value.startsWith(state)
-        }
+        rowState.removeIf { it.get(index) - '0' != result }
 
-        if(remaining.size == 1) {
-            return remaining.get(0).toInt(2)
-        }
+        if(rowState.size == 1) break;
     }
 
-    throw Exception("Could not locate an unique value in the column");
+    return rowState.get(0).toInt(2)
 }
 
 fun getMostOccurring(values: List<Int>): Int? {
@@ -74,21 +68,8 @@ fun getLeastOccurring(values: List<Int>): Int? {
     return occurences.minByOrNull { it.value }?.key
 }
 
-fun getColumns(rows: List<String>): Map<Int, MutableList<Int>> {
-    var columns = HashMap<Int, MutableList<Int>>()
-
-    rows.forEach { row -> 
-        var values = row.map { it - '0' }
-        
-        values.forEachIndexed { index, value -> 
-            var column = columns.getOrDefault(index, mutableListOf())
-            
-            column.add(value)
-            columns.put(index, column)
-        }
-    }
-
-    return columns;
+fun getColumn(rows: List<String>, index: Int): List<Int> {
+    return rows.map { row -> row.get(index) - '0' }
 }
 
-typealias Calculation = (values: List<Int>) -> Int?
+typealias OccurrenceCalculation = (values: List<Int>) -> Int?
