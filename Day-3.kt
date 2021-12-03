@@ -8,25 +8,22 @@ val widthRange = 0..11
 fun main(args: Array<String>) {
     val input = getPuzzleInput(3, 1)
 
-    val powerConsumption = getPowerConsumption(input);
-    println("Submarine power consumption is $powerConsumption")
-
-    val lifeSupport = getLifeSupportRating(input);
-    println("Submarine life support rating is $lifeSupport")
+    getPowerConsumption(input);
+    getLifeSupportRating(input);
 }
 
-fun getLifeSupportRating(rows: List<String>): Int {
+fun getLifeSupportRating(rows: List<String>) {
     val oxygenGeneratorRating = locateWithFiltering(rows) { getMostOccurring(it) }
     val gasScrubberRating = locateWithFiltering(rows) { getLeastOccurring(it) }
 
-    return oxygenGeneratorRating * gasScrubberRating
+    println("Submarine power consumption is ${oxygenGeneratorRating * gasScrubberRating}")
 }
 
-fun getPowerConsumption(rows: List<String>): Int {
+fun getPowerConsumption(rows: List<String>) {
     val gammaRating = locate(rows) { getMostOccurring(it) }
     val epsilonRating = locate(rows) { getLeastOccurring(it) }
 
-    return gammaRating * epsilonRating
+    println("Submarine life support rating is ${gammaRating * epsilonRating}")
 }
 
 fun locate(rows: List<String>, getOccuringFn: OccurrenceCalculation): Int {
