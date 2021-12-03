@@ -21,8 +21,8 @@ fun getLifeSupportRating(rows: List<String>): Int {
 }
 
 fun getPowerConsumption(rows: List<String>): Int {
-    var gammaRate = locate(rows) { values -> getMostOccurring(values) }
-    var epsilonRate = locate(rows) { values -> getLeastOccurring(values) }
+    val gammaRate = locate(rows) { values -> getMostOccurring(values) }
+    val epsilonRate = locate(rows) { values -> getLeastOccurring(values) }
 
     return gammaRate * epsilonRate
 }
