@@ -1,4 +1,4 @@
-package be.vreijsen.aoc.day_2_2
+package be.vreijsen.aoc.day_2
 
 import be.vreijsen.aoc.utils.*;
 
