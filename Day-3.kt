@@ -21,15 +21,20 @@ fun getLifeSupportRating(rows: List<String>): Int {
 }
 
 fun getPowerConsumption(rows: List<String>): Int {
-    var gammaBinary: String = ""
-    var epsilonBinary: String = ""
+    var gammaRate = locate(rows) { values -> getMostOccurring(values) }
+    var epsilonRate = locate(rows) { values -> getLeastOccurring(values) }
 
-    getColumns(rows).forEach { (index, values) -> 
-        gammaBinary += getMostOccurring(values)
-        epsilonBinary += getLeastOccurring(values)
+    return gammaRate * epsilonRate
+}
+
+fun locate(rows: List<String>, calculateFn: Calculation): Int {
+    var state = ""
+
+    getColumns(rows).forEach{ (index, values) -> 
+        state += calculateFn(values)
     }
 
-    return gammaBinary.toInt(2) * epsilonBinary.toInt(2)
+    return state.toInt(2)
 }
 
 fun locateByFiltering(rows: List<String>, calculateFn: Calculation): Int {
