@@ -38,7 +38,8 @@ fun getBoards(input: List<String>): List<Board> {
         .filterIndexed { index, line -> index > 1 && line.length != 0 }
         .map { it.trim().split(" ") }
         .forEach { numbers ->                          
-            val row = numbers.filter { it.isNotBlank() }.map { it.toInt() }
+            val row = numbers.filter { it.isNotBlank() }
+                             .map { it.toInt() }
             
             board.put(row)
     
