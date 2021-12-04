@@ -76,10 +76,9 @@ class Board {
     }
 
     fun getRemainingSum(): Int {
-        return rows.
-            flatMap { row -> row.filter { ! it.marked }}
-            .map { it.number }
-            .sum()
+        return rows.flatMap { row -> row.filter { ! it.marked }}
+                   .map { it.number }
+                   .sum()
     }
 
     fun genColumns() {
