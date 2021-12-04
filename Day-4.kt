@@ -35,13 +35,11 @@ fun getBoards(input: List<String>): List<Board> {
     var board: Board = Board();
 
     input
-        .filter { it.length <= 14 && it.length != 0 }
-        .forEach { line ->
-            val divider = Regex("\\s+")
-            val row = line.split(divider)
-                          .filter { it.isNotBlank() }
-                          .map { it.toInt() }
-                          
+        .filterIndexed { index, line -> index > 1 && line.length != 0 }
+        .map { it.trim().split(" ") }
+        .forEach { numbers ->                          
+            val row = numbers.filter { it.isNotBlank() }.map { it.toInt() }
+            
             board.put(row)
     
             if(board.isComplete()) {
