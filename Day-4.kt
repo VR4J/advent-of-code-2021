@@ -45,6 +45,7 @@ fun getBoards(input: List<String>): List<Board> {
             board.put(row)
     
             if(board.isComplete()) {
+                board.genColumns()
                 boards.add(board)
                 board = Board()
             }
@@ -82,14 +83,11 @@ class Board {
             .sum()
     }
 
-    fun isComplete(): Boolean {
-        if(rows.size == 5) {
-            columns = rows.transpose(5, 5, BingoNumber(0))
-            return true
-        }
-
-        return false
+    fun genColumns() {
+        columns = rows.transpose(5, 5, BingoNumber(0))
     }
+
+    fun isComplete(): Boolean = rows.size == 5
 }
 
 data class BingoNumber (val number: Int, var marked: Boolean = false) {
