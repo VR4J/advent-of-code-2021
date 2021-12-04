@@ -56,27 +56,11 @@ fun getBoards(input: List<String>): List<Board> {
 class Board {
 
     val rows = mutableListOf<MutableList<BingoNumber>>()
-    val columns = mutableListOf<MutableList<BingoNumber>>()
+    var columns = mutableListOf<MutableList<BingoNumber>>()
 
     fun put(line: List<Int>) {
-        rows.add(
-            line.map { BingoNumber(it) }
-                .toMutableList()
-        )
-
-        rows.forEach { row -> 
-            row.forEachIndexed { index, value -> 
-                var column = columns.getOrElse(index) { mutableListOf() }
-
-                column.add(value)
-                
-                if(columns.size > index) {
-                    columns.set(index, column)
-                } else {
-                    columns.add(column)
-                }
-            }
-        }
+        val series = line.map { BingoNumber(it) }.toMutableList()
+        rows.add(series)
     }
 
     fun mark(drawn: Int) {
@@ -98,7 +82,14 @@ class Board {
             .sum()
     }
 
-    fun isComplete(): Boolean = rows.size == 5
+    fun isComplete(): Boolean {
+        if(rows.size == 5) {
+            columns = rows.transpose(5, 5, BingoNumber(0))
+            return true
+        }
+
+        return false
+    }
 }
 
 data class BingoNumber (val number: Int, var marked: Boolean = false) {
