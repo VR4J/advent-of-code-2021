@@ -48,15 +48,15 @@ data class Line(val start: Coordinate, val end: Coordinate) {
             return range.map { Coordinate(it, start.y) }
         }
 
-        val xDelta = (end.x - start.x).sign // Either +1, 0 or -1
-        val yDelta = (end.y - start.y).sign // Either +1, 0 or -1
+        val xStep = (end.x - start.x).sign // Either +1, 0 or -1
+        val yStep = (end.y - start.y).sign // Either +1, 0 or -1
 
         // Max steps we need to take
         // Use absolute value to get go from -1 to 1
         val steps = maxOf((start.x - end.x).absoluteValue, (start.y - end.y).absoluteValue)
 
         // + +1, 0 or + -1 
-        return (1 .. steps).scan(start) { last, _ -> Coordinate(last.x + xDelta, last.y + yDelta) }
+        return (1 .. steps).scan(start) { last, _ -> Coordinate(last.x + xStep, last.y + yStep) }
     }
 
     fun isDiagonal(): Boolean = ! (start.y == end.y || start.x == end.x)
