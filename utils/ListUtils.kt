@@ -16,3 +16,8 @@ fun <T> MutableList<MutableList<T>>.transpose(column: Int, rows: Int, default: T
 
     return transposed;
 }
+
+fun <T> List<T>.hasEqualContents(target: List<T>): Boolean {
+    val set: Set<T> = this.toSet()
+    return this.size == target.size && set.containsAll(target);
+}
