@@ -4,6 +4,19 @@ import java.util.Collections;
 import kotlin.math.abs;
 import be.vreijsen.aoc.utils.*;
 
+/*
+        0
+     -- -- --
+    |        |
+  1 |        | 2
+    |   3    |
+     -- -- --
+    |        |
+  4 |        | 5
+    |   6    |
+     -- -- --
+*/
+
 val digits = mutableMapOf(
     Pair(0, listOf(0, 1, 2, 4, 5, 6)),
     Pair(1, listOf(2, 5)),
