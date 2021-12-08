@@ -55,7 +55,7 @@ fun getOutput(reading: List<String>, mapping: List<String>): Int {
             .map { it.key.toString() }
             .first()
         }
-        .joinToString()
+        .joinToString("")
         .toInt()
 }
 
@@ -109,7 +109,6 @@ fun getMapping(outputs: List<String>): List<String>  {
                 }
             }
         }
-
     }
 
     do {
