@@ -3,5 +3,6 @@ package be.vreijsen.aoc.utils
 import java.io.File;
 
 fun getPuzzleInput(day: Number, part: Number): List<String> {
-    return File("inputs/Day-$day/Part-$part.txt").readLines()
+    val path = String.format("inputs/Day-%02d/Part-$part.txt", day)
+    return File(path).readLines()
 }
