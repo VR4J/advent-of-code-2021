@@ -125,8 +125,8 @@ fun getMapping(outputs: List<String>): List<String>  {
     }
 
     do {
-        var uncertainties = mapping.filter { (key, value) -> value.size > 1 }.map { it.value[0] }
-        var certainties = mapping.filter { (key, value) -> value.size == 1 }.map { it.value[0] }
+        var uncertainties = mapping.values.filter { it.size > 1 }
+        var certainties = mapping.values.filter { it.size == 1 }.map { it[0] }
 
         mapping.filter { (key, value) -> value.size > 1 }
            .forEach { (key, value) -> 
