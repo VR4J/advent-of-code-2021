@@ -5,49 +5,40 @@ import be.vreijsen.aoc.utils.*;
 fun main(args: Array<String>) {
     var grid = getPuzzleInput(9, 1).map { it.map { it - '0'}}
 
-    runPartOne(grid)
-    runPartTwo(grid)
+    val lowpoints = getLowPoints(grid)
+    
+    println("Result first part: ${ lowpoints.values.map { it + 1 }.sum() }")
+
+    val basins = getBasins(grid, lowpoints)
+
+    println("Result second part: ${ basins.get(0).size * basins.get(1).size * basins.get(2).size }")
 }
 
-fun runPartOne(grid: List<List<Int>>) {
-    val riskLevels = mutableListOf<Int>()
+fun getLowPoints(grid: List<List<Int>>): Map<Coordinate, Int> {
+    val lowpoints = mutableMapOf<Coordinate, Int>()
 
     grid.forEachIndexed { y, row ->
         row.forEachIndexed { x, value ->
             val matching = getNeighboursMeetingRequirement(grid, x, y) { _, neighbourValue -> neighbourValue > value }
 
             if(matching.size == 4) {
-                riskLevels.add(value + 1)
+                lowpoints[Coordinate(x, y)] = value
             }            
         }
     }
 
-    println("Risk levels: $riskLevels")
-    println("Result: ${riskLevels.sum()}")
+    return lowpoints;
 }
 
-fun runPartTwo(grid: List<List<Int>>) {
-    val lowpoints = mutableListOf<Coordinate>()
+fun getBasins(grid: List<List<Int>>, lowpoints: Map<Coordinate, Int>): List<Map<Coordinate, Int>> {
     val basins = mutableListOf<Map<Coordinate, Int>>()
 
-    grid.forEachIndexed { y, row ->
-        row.forEachIndexed { x, value ->
-            val matching = getNeighboursMeetingRequirement(grid, x, y) { _, neighbourValue -> neighbourValue > value }
-
-            if(matching.size == 4) {
-                lowpoints.add(
-                    Coordinate(x, y)
-                )
-            }
-        }
-    }
-
-    lowpoints.forEach { lowpoint ->
+    lowpoints.forEach { (pointCoordinate, pointValue) ->
         val basin = mutableMapOf<Coordinate, Int>(
-            Pair(lowpoint, 0)
+            Pair(pointCoordinate, pointValue)
         )
 
-        walkTheGrid(grid, mutableListOf(), lowpoint) { coordinate, neighbourValue ->
+        walkTheGrid(grid, mutableListOf(), pointCoordinate) { coordinate, neighbourValue ->
             basin[coordinate] = neighbourValue
         }
     
@@ -56,9 +47,7 @@ fun runPartTwo(grid: List<List<Int>>) {
 
     basins.sortByDescending { it.size }
 
-    val result = basins.get(0).size * basins.get(1).size * basins.get(2).size
-
-    println("Result: $result")
+    return basins;
 }
 
 fun walkTheGrid(grid: List<List<Int>>, walked: MutableList<Coordinate>, target: Coordinate, onMatchingNeighbour: (coordinate: Coordinate, value: Int) -> Unit) {
