@@ -21,11 +21,11 @@ fun run(input: List<List<Char>>) {
     val corruptSyntaxScore = mutableMapOf<Char, Int>()
     val incompleteSyntaxScore = mutableListOf<Long>()
 
-    input.forEachIndexed { lIndex, line -> 
+    input.forEachIndexed { lineIndex, line -> 
         var isCorrupted = false
-        val toComeClosingCharacters = mutableListOf<Char>()
+        val closingCharactersExpected = mutableListOf<Char>()
 
-        line.forEachIndexed { cIndex, character -> 
+        line.forEachIndexed { characterIndex, character -> 
             if(! isCorrupted) {
                 val definition = getCharacterDefinition(character)
 
@@ -35,14 +35,14 @@ fun run(input: List<List<Char>>) {
 
                 // isOpeningCharacter
                 if(definition.first == character) {
-                    toComeClosingCharacters.add(0, definition.second)
+                    closingCharactersExpected.add(0, definition.second)
                 }
 
                 // isClosingCharacter
                 if(definition.second == character) {
-                    val closingCharacterExpected = toComeClosingCharacters.get(0)
+                    val expected = closingCharactersExpected.get(0)
                     
-                    isCorrupted = character != closingCharacterExpected
+                    isCorrupted = character != expected
 
                     if(isCorrupted) {
                         val occurrence = occurrences.getOrDefault(character, 0) + 1
@@ -50,17 +50,17 @@ fun run(input: List<List<Char>>) {
                         occurrences.put(character, occurrence)
                         corruptSyntaxScore.put(character, occurrence * definition.third)
 
-                        println("Line ${lIndex + 1},${cIndex + 1}: Expected $closingCharacterExpected but found ${character} instead.")
+                        println("Line ${lineIndex + 1},${characterIndex + 1}: Expected $expected but found ${character} instead.")
                     } else {
-                        toComeClosingCharacters.removeAt(0)
+                        closingCharactersExpected.removeAt(0)
                     }
                 }
 
                 // isIncomplete
-                if(cIndex == line.size - 1 && toComeClosingCharacters.size > 0) {
+                if(characterIndex == line.size - 1 && closingCharactersExpected.size > 0) {
                     var score = 0L;
 
-                    toComeClosingCharacters.forEach { char ->
+                    closingCharactersExpected.forEach { char ->
                         val def = getCharacterDefinition(char);
 
                         if(def == null) {
