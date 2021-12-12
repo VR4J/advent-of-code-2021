@@ -10,8 +10,6 @@ fun main(args: Array<String>) {
         Connection(left, right) 
     }
 
-    println(connections)
-
     var result = 0;
 
     getPaths("start", connections, listOf(), listOf()) { 
@@ -33,7 +31,6 @@ fun getPaths(name: String, connections: List<Connection>, visited: List<String>,
 
     if(neighbours.contains("end")) {
         breadcrumbs = breadcrumbs.plus("end")
-        println("Path: $breadcrumbs")
         onReachEnd()
     } 
     
@@ -45,8 +42,20 @@ fun getPaths(name: String, connections: List<Connection>, visited: List<String>,
 }
 
 fun getConnecting(name: String, connections: List<Connection>, visited: List<String>): List<String> {
-    return connections.filter { (it.left == name || it.right == name) && ! visited.contains(name) }
+    return connections.filter { (it.left == name || it.right == name) && visitCheck(name, visited) }
                       .map { if(it.left == name) it.right else it.left }  
+}
+
+fun visitCheck(name: String, visited: List<String>): Boolean {
+    if(hasTwiceVisit(visited)) {
+        return ! visited.contains(name);
+    }
+
+    return true;
+}
+
+fun hasTwiceVisit(visited: List<String>): Boolean {
+    return visited.groupingBy { it }.eachCount().any { it.value == 2 }
 }
 
 data class Connection(val left: String, val right: String)
