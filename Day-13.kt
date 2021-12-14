@@ -1,4 +1,4 @@
-package be.vreijsen.aoc.day_12
+package be.vreijsen.aoc.day_13
 
 import be.vreijsen.aoc.utils.*;
 
@@ -32,11 +32,7 @@ fun visualize(dots: Set<Dot>) {
         var line = ""
 
         for(i in 0..max) {
-            if(xPositions.contains(i)) {
-                line += "#"
-            } else {
-                line += "."
-            }
+            line += if(xPositions.contains(i)) "#" else "."
         }
 
         println(line)
