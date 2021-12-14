@@ -29,7 +29,7 @@ fun polymerization(template: String, rules: List<Rule>, steps: Int) {
         for((pair, value) in HashMap(pairs)) {
             pairs.decrease(pair, value)
 
-            val rule = getRule(rules, pair) !!
+            val rule = rules.find { it.elements == pair }
 
             pairs.increase(Pair(pair.first, rule.insertion), value)
             pairs.increase(Pair(rule.insertion, pair.second), value)
@@ -42,10 +42,6 @@ fun polymerization(template: String, rules: List<Rule>, steps: Int) {
     val min = characters.minByOrNull { it.value }!!.value
     
     println("Polymer: $max - $min = ${max - min}")
-}
-
-fun getRule(rules: List<Rule>, pair: Pair<Char, Char>): Rule? {
-    return rules.find { it.elements == pair }
 }
 
 fun occurresIn(string: String, pattern: String): Long {
